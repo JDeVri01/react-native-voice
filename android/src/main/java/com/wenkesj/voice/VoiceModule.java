@@ -118,7 +118,7 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
     if (!isPermissionGranted() && opts.getBoolean("REQUEST_PERMISSIONS_AUTO")) {
       String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO};
       if (this.getCurrentActivity() != null) {
-        ((ReactActivity) this.getCurrentActivity()).requestPermissions(PERMISSIONS, 1, new PermissionListener() {
+        ((IRequestPermissions) this.getCurrentActivity()).requestPermissions(PERMISSIONS, 1, new PermissionListener() {
           public boolean onRequestPermissionsResult(final int requestCode,
                                                     @NonNull final String[] permissions,
                                                     @NonNull final int[] grantResults) {
