@@ -13,6 +13,9 @@ npm i react-native-voice --save
   * [Linking](#linking)
     * [Manually Link Android](#manually-link-android)
     * [Manually Link iOS](#manually-link-ios)
+  * [Android Tweaks](#Expo)
+    * [React Native without Expo](#react-native-without-expo)
+    * [React Native with Expo](#react-native-with-expo)
   * [Usage](#usage)
     * [Example](#example)
   * [API](#api)
@@ -77,6 +80,51 @@ public class MainActivity extends ReactActivity {
 
 - Click on your main project file (the one that represents the .xcodeproj) select Build Phases and drag the static library, lib.Voice.a, from the Libraries/Voice.xcodeproj/Products folder to Link Binary With Libraries
 
+<h2 align="center">Android Tweaks</h2>
+
+<p align="center">There are some manual tweaks needed in the Android project to use this:</p>
+
+### React Native Without Expo
+
+- In `MainActivity.java`
+
+```java
+import com.facebook.react.ReactPackage;
+import com.facebook.react.ReactActivity;
+...
+import com.wenkesj.voice.IRequestPermissions; // <------ Add this!
+...
+public class MainActivity extends ReactActivity implements IRequestPermissions { // <------ Add 'implements IRequestPermissions'
+...
+}
+```
+
+### React Native With Expo
+
+- In `MainActivity.java`
+
+```java
+import com.facebook.react.ReactPackage;
+import host.exp.expoview.ExponentActivity;
+...
+import com.wenkesj.voice.IRequestPermissions; // <------ Add this!
+...
+public class MainActivity extends ExponentActivity implements IRequestPermissions { // <------ Add 'implements IRequestPermissions'
+...
+    // Add the following for the requestPermissions implementation
+    protected PermissionListener permissionListener = null;
+    @Override
+    public void requestPermissions(String[] permissions, int requestCode, PermissionListener listener) {
+        this.permissionListener = listener;
+        this.requestPermissions(permissions, requestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (this.permissionListener != null) this.permissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+}
+```
 
 <h2 align="center">Usage</h2>
 
